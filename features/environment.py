@@ -49,7 +49,6 @@ def before_all(context):
     headless_value = context.config.userdata.get('headless', 'false').lower()
     context.headless_mode = headless_value in ("true", "1", "yes")
 
-
 def before_scenario(context, scenario):
     """
     Se utiliza el fixture del navegador antes de cada escenario.
