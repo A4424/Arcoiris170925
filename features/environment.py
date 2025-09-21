@@ -1,3 +1,5 @@
+#environment.py
+
 from behave.fixture import fixture, use_fixture
 from selenium import webdriver
 import os
@@ -74,3 +76,4 @@ def after_all(context):
     Se limpian los recursos después de todas las pruebas.
     """
     print("La ejecución de las pruebas ha finalizado.")
+
