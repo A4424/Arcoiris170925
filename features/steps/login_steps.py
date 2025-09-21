@@ -1,5 +1,5 @@
 # Ruta: C:\CURSO_TESTER_QA\Python_arcoiris-automation\features\steps\login_steps.py
-# 150925 -14:50
+
 from behave import given, when, then
 from pages.login_page import LoginPage
 from selenium.webdriver.support import expected_conditions as EC
@@ -148,3 +148,25 @@ def step_impl(context):
         assert False, f"No se permaneció en la página de inicio. Se redirigió a: {current_url}"
     else:
         print("Se permaneció en la página de inicio.")
+
+def access_system_with_valid_credentials(context):
+    """
+    Se encapsula el proceso de inicio de sesion con credenciales validas
+    para ser reutilizado en otros escenarios.
+    """
+    context.login_page = LoginPage(context.browser)
+    context.login_page.navigate()
+
+    username = os.getenv("VALID_USERNAME")
+    password = os.getenv("VALID_PASSWORD")
+    context.login_page.enter_credentials(username, password)
+
+    context.login_page.click_login_button()
+
+    # Se añade una verificación de redirección para asegurar que el login fue exitoso.
+    try:
+        wait = WebDriverWait(context.browser, 10)
+        wait.until(EC.invisibility_of_element_located(context.login_page.login_button))
+        print("Redireccion exitosa a la pagina de inicio despues de login.")
+    except TimeoutException:
+        assert False, "No se produjo una redireccion a la pagina de inicio despues de login."
