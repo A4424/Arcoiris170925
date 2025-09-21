@@ -26,7 +26,7 @@ Feature: Gestion del perfil y suscripcion en el sitio PuntosPremiumPlus
     And Se hace clic en el enlace "PERFIL"
     Then Se muestra el contenido del perfil de usuario
     When Se desactiva la suscripcion para recibir promociones
-    Then Se muestra el contenido del perfil de usuario
+    Then Se verifica que la suscripcion esté desactivada
 
   @hamburguesa
   Scenario: Comprobar el comportamiento de mostrar y ocultar el menu hamburguesa
