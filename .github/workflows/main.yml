@@ -1,10 +1,55 @@
+#name: Behave CI Tests
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#      - AI-170925
+#  pull_request:
+#    branches:
+#      - main
+#
+#jobs:
+#  run-behave-tests:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.x'
+#
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install -r requirements.txt
+#
+#      - name: Run Behave tests
+#        env:
+#          BASE_URL: ${{ secrets.BASE_URL }}
+#          VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
+#          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+#          INVALID_USERNAME: ${{ secrets.INVALID_USERNAME }}
+#          INVALID_PASSWORD: ${{ secrets.INVALID_PASSWORD }}
+#        run: behave -D headless=true -f html -o reports/report1.html
+#
+#      - name: Archive HTML report
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: behave-report
+#          path: reports/report1.html
+
+# -------------
 name: Behave CI Tests
 
 on:
   push:
     branches:
       - main
-      - AI-170925
+      - 'AI-170925' # se mantiene para el nombre de rama que se esta usando
   pull_request:
     branches:
       - main
@@ -25,15 +70,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # Se instala un navegador para que Selenium pueda usarlo
+          sudo apt-get update && sudo apt-get install -y google-chrome-stable
+
+      - name: Create reports directory
+        run: mkdir -p reports
 
       - name: Run Behave tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
-          INVALID_USERNAME: ${{ secrets.INVALID_USERNAME }}
-          INVALID_PASSWORD: ${{ secrets.INVALID_PASSWORD }}
-        run: behave -D headless=true -f html -o reports/report1.html
+        run: |
+          behave -f html -o reports/report1.html
 
       - name: Archive HTML report
         if: always()
