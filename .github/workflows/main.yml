@@ -81,8 +81,13 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
-        run: |
-          behave -f html -o reports/report1.html
+          INVALID_USERNAME: ${{ secrets.INVALID_USERNAME }}
+          INVALID_PASSWORD: ${{ secrets.INVALID_PASSWORD }}
+          run: behave -D headless=true -f html -o reports/report1.html
+     
+       
+       # run: |
+       #   behave -f html -o reports/report1.html
 
       - name: Archive HTML report
         if: always()
